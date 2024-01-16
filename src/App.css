@@ -1,3 +1,9 @@
-:root{
-  @apply bg-gray-800
+body{
+  @apply bg-gray-800;
+  font-family: 'Roboto Mono';
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  src: url('./fonts/Roboto_Mono/static/RobotoMono-Thin.ttf');
 }
