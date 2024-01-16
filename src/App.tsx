@@ -1,6 +1,7 @@
 //1024x600
 import "./App.css";
 import Clock from "./components/Clock";
+import Weather from "./components/Weather";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
             <Clock />
           </div>
           <div className="border border-yellow-800 row-span-6 text-white">
-            weather
+            <Weather />
           </div>
           <div className="border border-green-800 row-span-2 col-span-2 text-white">
             date
