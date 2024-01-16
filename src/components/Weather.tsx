@@ -16,7 +16,7 @@ function Weather() {
         <p className="text-[13vh]">90°F</p>
       </div>
       <div className="grid grid-cols-3">
-        <div className="border flex flex-col items-center pt-2">
+        <div className="flex flex-col items-center pt-2">
           <p className="pb-4">Wed</p>
           <svg
             className="fill-white"
@@ -29,7 +29,7 @@ function Weather() {
           </svg>
           <p className="pt-12">82°F</p>
         </div>
-        <div className="border flex flex-col items-center pt-2">
+        <div className="flex flex-col items-center pt-2">
           <p className="pb-4">Thurs</p>
           <svg
             className="fill-white"
@@ -42,7 +42,7 @@ function Weather() {
           </svg>
           <p className="pt-12">86°F</p>
         </div>
-        <div className="border flex flex-col items-center pt-2">
+        <div className="flex flex-col items-center pt-2">
           <p className="pb-4">Fri</p>
           <svg
             className="fill-white"
