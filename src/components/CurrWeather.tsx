@@ -7,12 +7,14 @@ function CurrWeather() {
   const [long, setLong] = useState<number>(0);
 
   useEffect(() => {
+    console.log("ran")
     function fetchLocation() {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
           function (position) {
             setLat(position.coords.latitude);
             setLong(position.coords.longitude);
+            console.log(lat, long)
             if (lat != 0) {
               fetchWeather();
             }
@@ -37,14 +39,10 @@ function CurrWeather() {
     }
 
     async function fetchWeather() {
-      const fields = [
-        "temperature"
-      ]
-      const units = 'imperial'
-      const timesteps = ["current", "30m"]
-      const timeZone = "America"
       const response = await fetch(
-        `https://api.tomorrow.io/v4/timelines?location=40.75872069597532,-73.98529171943665&fields=temperature&timesteps=1h&units=metric&apikey=JJYa2PlL3yMU9eWnA7Qf84NRyflyCm4C`,
+        `http://api.weatherapi.com/v1/current.json?key=${
+          import.meta.env.VITE_API_KEY_OG
+        }&q=${lat},${long}`,
         {
           method: "POST",
           headers: {
@@ -57,20 +55,24 @@ function CurrWeather() {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        //console.log(data.current.temp_f);
-        //setTemp(Math.round(data.current.temp_f));
-        //setIcon(data.current.condition.icon);
+        console.log(data.current.temp_f);
+        setTemp(Math.round(data.current.temp_f));
+        let icon: string = data.current.condition.icon
+        let iconList: string[] = icon.split("/")
+        iconList[4] = "128x128"
+        icon = iconList.join("/")
+        setIcon(icon);
       } else {
         console.log("error fetching weather");
       }
     }
     fetchLocation();
-  }, [lat]);
+  }, []);
 
   return (
     <div className="flex flex-col row-span-2 items-center justify-center gap-8">
-      <img className="" src={icon} alt="icon" />
-      <p className="text-[13vh]">{temp}°F</p>
+      <img className="" src={icon} alt="weather icon" />
+      <p className="text-[12vh]">{temp}°F</p>
     </div>
   );
 }
