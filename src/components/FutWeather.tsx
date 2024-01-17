@@ -3,7 +3,7 @@ import { useGeolocated } from "react-geolocated";
 import date from "date-and-time";
 
 interface Temp {
-  date: string;
+  date: Date;
   maxTemp: number;
   minTemp: number;
   icon: string;
@@ -12,7 +12,7 @@ interface Temp {
 function FutWeatherDay({ temp }: { temp: Temp }) {
   return (
     <div className="flex flex-col items-center justify-center pt-2">
-      <p className="pb-1">{date.format(new Date(temp.date), "ddd")}</p>
+      <p className="pb-1">{date.format(temp.date, "ddd")}</p>
       <img className="" src={temp.icon} alt="weather icon" />
       <p className="pt-6 text-center">{Math.round(temp.minTemp)}°F</p>
       <p className="text-center">{Math.round(temp.maxTemp)}°F</p>
@@ -34,7 +34,7 @@ function FutWeather() {
       const response = await fetch(
         `http://api.weatherapi.com/v1/forecast.json?key=${
           import.meta.env.VITE_API_KEY_OG
-        }&q=${coords?.latitude},${coords?.longitude}&days=3`,
+        }&q=${coords?.latitude},${coords?.longitude}&days=4`,
         {
           method: "POST",
           headers: {
@@ -46,8 +46,9 @@ function FutWeather() {
 
       if (response.ok) {
         const data = await response.json();
-        for (let i = 0; i < 3; i++) {
-          let date: string = data.forecast.forecastday[i].date;
+        for (let i = 1; i < 4; i++) {
+          let date: Date = new Date(data.forecast.forecastday[i].date);
+          date = new Date(date.getTime() + date.getTimezoneOffset() * 60000) //this gives correct dates
           let maxTemp: number = data.forecast.forecastday[i].day.maxtemp_f;
           let minTemp: number = data.forecast.forecastday[i].day.mintemp_f;
           let icon: string = data.forecast.forecastday[i].day.condition.icon;
@@ -65,7 +66,7 @@ function FutWeather() {
       }
     }
     if (coords != null) {
-      //fetchWeather();
+      fetchWeather();
     }
   }, [coords]);
 
