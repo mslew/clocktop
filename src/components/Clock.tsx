@@ -15,7 +15,7 @@ function Clock({ time }: { time: Date }) {
         setHour(hours)
         setMinute(minutes)
         setAmpm(ampm)
-    }, []);
+    }, [time]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">

@@ -14,7 +14,7 @@ function App() {
     return function cleanup() {
       clearInterval(timerId);
     };
-  }, []);
+  }, [date]);
 
   function refreshClock() {
     setDate(new Date());
