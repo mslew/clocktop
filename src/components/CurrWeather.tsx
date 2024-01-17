@@ -28,8 +28,6 @@ function CurrWeather() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
-        console.log(data.current.temp_f);
         setTemp(Math.round(data.current.temp_f));
         let icon: string = data.current.condition.icon;
         let iconList: string[] = icon.split("/");

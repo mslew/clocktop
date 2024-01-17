@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useGeolocated } from "react-geolocated";
+import date from "date-and-time";
 
 interface Temp {
   date: string;
@@ -10,12 +11,11 @@ interface Temp {
 
 function FutWeatherDay({ temp }: { temp: Temp }) {
   return (
-    <div className="flex flex-col items-center pt-2">
-      <p className="pb-4">{temp.date}</p>
+    <div className="flex flex-col items-center justify-center pt-2">
+      <p className="pb-1">{date.format(new Date(temp.date), "ddd")}</p>
       <img className="" src={temp.icon} alt="weather icon" />
-      <p className="pt-12">
-        {temp.minTemp}°F - {temp.maxTemp}°F
-      </p>
+      <p className="pt-6 text-center">{Math.round(temp.minTemp)}°F</p>
+      <p className="text-center">{Math.round(temp.maxTemp)}°F</p>
     </div>
   );
 }
@@ -46,8 +46,7 @@ function FutWeather() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 3; i++) {
           let date: string = data.forecast.forecastday[i].date;
           let maxTemp: number = data.forecast.forecastday[i].day.maxtemp_f;
           let minTemp: number = data.forecast.forecastday[i].day.mintemp_f;
@@ -66,17 +65,15 @@ function FutWeather() {
       }
     }
     if (coords != null) {
-      fetchWeather();
+      //fetchWeather();
     }
   }, [coords]);
 
   return (
     <div className="grid grid-cols-3">
-      <div className="flex flex-col items-center pt-2">
-        {temps.map((temp, index) => (
-          <FutWeatherDay temp={temp} key={index}/>
-        ))}
-      </div>
+      {temps.map((temp, index) => (
+        <FutWeatherDay temp={temp} key={index} />
+      ))}
     </div>
   );
 }
