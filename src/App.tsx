@@ -25,14 +25,14 @@ function App() {
       <div className="flex flex-col h-screen w-screen justify-center items-center">
         <div className="w-full h-full grid grid-cols-4 grid-rows-6">
           <div className="col-span-3 row-span-5 text-white">
-            <Clock time={date.toLocaleTimeString()} />
+            <Clock time={date} />
           </div>
           <div className="row-span-6 text-white">
             <Weather />
           </div>
           <div className="row-span-2 col-span-2 text-white">
             <DateDisplay
-              date={dateFormat(date.toLocaleDateString(), "UTC:dddd, mmmm dS")}
+              date={date}
             />
           </div>
           <div className="row-span-2 text-white">
