@@ -1,10 +1,9 @@
-//text-[30vh] font-extrabold
-
-function Clock() {
+function Clock({ time }: { time: string }) {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <div className="grid grid-cols-7 w-full h-3/4">
         <div className="h-full flex flex-col items-center justify-center font-extrabold">
+          {time}
           <p className="text-[30vh]">1</p>
         </div>
         <div className="flex flex-col items-center justify-center font-extrabold">
