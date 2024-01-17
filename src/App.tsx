@@ -3,6 +3,7 @@ import "./App.css";
 import Clock from "./components/Clock";
 import Weather from "./components/Weather";
 import Date from "./components/Date";
+import Calendar from "./components/Calendar";
 
 function App() {
   return (
@@ -18,7 +19,9 @@ function App() {
           <div className="row-span-2 col-span-2 text-white">
             <Date />
           </div>
-          <div className="row-span-2 text-white">calendar</div>
+          <div className="row-span-2 text-white">
+            <Calendar />
+          </div>
         </div>
       </div>
     </>
