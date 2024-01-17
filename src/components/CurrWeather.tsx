@@ -1,4 +1,28 @@
+import { useState, useEffect } from "react";
+
 function CurrWeather() {
+
+  const [temp, setTemp] = useState<number>(0)
+  const [icon, setIcon] = useState<string>("")
+
+  useEffect(() => {
+    async function fetchWeather(){
+      const response = await fetch(`http://api.weatherapi.com/v1/current.json?key=${import.meta.env.VITE_API_KEY}&q=Lockport`, {
+        method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          }) 
+  
+          if(response.ok){
+            const data = await response.json()
+            console.log(data)
+          }
+    }
+    fetchWeather()
+  }, [])
+
   return (
     <div className="flex flex-col row-span-2 items-center justify-center gap-8">
       <svg
