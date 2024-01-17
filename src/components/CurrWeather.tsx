@@ -13,7 +13,7 @@ function CurrWeather() {
           function (position) {
             setLat(position.coords.latitude);
             setLong(position.coords.longitude);
-            if(lat != 0){
+            if (lat != 0) {
               fetchWeather();
             }
           },
@@ -37,10 +37,14 @@ function CurrWeather() {
     }
 
     async function fetchWeather() {
+      const fields = [
+        "temperature"
+      ]
+      const units = 'imperial'
+      const timesteps = ["current", "30m"]
+      const timeZone = "America"
       const response = await fetch(
-        `http://api.weatherapi.com/v1/current.json?key=${
-          import.meta.env.VITE_API_KEY
-        }&q=${lat},${long}`,
+        `https://api.tomorrow.io/v4/timelines?location=40.75872069597532,-73.98529171943665&fields=temperature&timesteps=1h&units=metric&apikey=JJYa2PlL3yMU9eWnA7Qf84NRyflyCm4C`,
         {
           method: "POST",
           headers: {
@@ -53,9 +57,9 @@ function CurrWeather() {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        console.log(data.current.temp_f);
-        setTemp(Math.round(data.current.temp_f));
-        setIcon(data.current.condition.icon);
+        //console.log(data.current.temp_f);
+        //setTemp(Math.round(data.current.temp_f));
+        //setIcon(data.current.condition.icon);
       } else {
         console.log("error fetching weather");
       }
@@ -65,11 +69,7 @@ function CurrWeather() {
 
   return (
     <div className="flex flex-col row-span-2 items-center justify-center gap-8">
-      <img
-      className=""
-      src={icon}
-      alt="icon"
-      />
+      <img className="" src={icon} alt="icon" />
       <p className="text-[13vh]">{temp}°F</p>
     </div>
   );
