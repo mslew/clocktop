@@ -2,14 +2,8 @@ import { useState, useEffect } from "react";
 import { useGeolocated } from 'react-geolocated';
 
 function CurrWeather() {
-  interface LatLong {
-    lat: number;
-    long: number;
-  }
-
   const [temp, setTemp] = useState<number>(0);
   const [icon, setIcon] = useState<string>("");
-  const [latLong, setLatLong] = useState<LatLong>({ lat: 0, long: 0 });
   const {coords} = useGeolocated({
     positionOptions:{
       enableHighAccuracy: true,
@@ -47,7 +41,7 @@ function CurrWeather() {
       }
     }
     if(coords != null){
-      fetchWeather();
+      //fetchWeather();
     }
   }, [coords]);
 
