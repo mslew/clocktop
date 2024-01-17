@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 function Clock({ time }: { time: Date }) {
     const [hour, setHour] = useState<number | null>(null);
     const [minute, setMinute] = useState<number | string | null>(null);
-    const [ampm, setAmpm] = useState<string| null>(null);
+    const [ampm, setAmpm] = useState<string | null>(null);
 
     useEffect(() => {
         let hours = time.getHours();
@@ -19,7 +19,7 @@ function Clock({ time }: { time: Date }) {
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
-      <div className="grid grid-cols-5 w-full h-3/4">
+      <div className="flex flex-row justify-center w-full h-3/4">
         <div className="h-full flex flex-col items-center justify-center font-extrabold">
           <p className="text-[30vh]">{hour}</p>
         </div>
@@ -29,7 +29,7 @@ function Clock({ time }: { time: Date }) {
         <div className="flex flex-col items-center justify-center font-extrabold">
           <p className="text-[30vh]">{minute}</p>
         </div>
-        <div className="flex flex-col col-span-2 items-center justify-center font-extrabold">
+        <div className="flex flex-col items-center justify-center font-extrabold">
           <p className="rotate-90 text-[30vh]">{ampm}</p>
         </div>
       </div>
