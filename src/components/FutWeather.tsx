@@ -22,7 +22,7 @@ function FutWeatherDay({ temp }: { temp: Temp }) {
 
 function FutWeather() {
   const [temps, setTemps] = useState<Temp[]>([]);
-  const [timer, setTimer] = useState<boolean>(false)
+  const [timer, setTimer] = useState<boolean>(false);
   const { coords } = useGeolocated({
     positionOptions: {
       enableHighAccuracy: true,
@@ -31,6 +31,20 @@ function FutWeather() {
   });
 
   useEffect(() => {
+    setInterval(() => {
+      //trigger API call once midnight is reached to update future days
+      setTimer(!timer);
+    }, msUntilMidnight());
+
+    function msUntilMidnight() {
+      let midnight = new Date();
+      midnight.setHours(24);
+      midnight.setMinutes(0);
+      midnight.setSeconds(0);
+      midnight.setMilliseconds(0);
+      return midnight.getTime() - new Date().getTime();
+    }
+
     async function fetchWeather() {
       const response = await fetch(
         `http://api.weatherapi.com/v1/forecast.json?key=${
@@ -49,7 +63,7 @@ function FutWeather() {
         const data = await response.json();
         for (let i = 1; i < 4; i++) {
           let date: Date = new Date(data.forecast.forecastday[i].date);
-          date = new Date(date.getTime() + date.getTimezoneOffset() * 60000) //this gives correct dates
+          date = new Date(date.getTime() + date.getTimezoneOffset() * 60000); //this gives correct dates
           let maxTemp: number = data.forecast.forecastday[i].day.maxtemp_f;
           let minTemp: number = data.forecast.forecastday[i].day.mintemp_f;
           let icon: string = data.forecast.forecastday[i].day.condition.icon;
@@ -68,7 +82,7 @@ function FutWeather() {
     if (coords != null) {
       fetchWeather();
     }
-  }, [coords]);
+  }, [coords, timer]);
 
   return (
     <div className="grid grid-cols-3">

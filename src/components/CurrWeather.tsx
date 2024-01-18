@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
-import { useGeolocated } from 'react-geolocated';
+import { useGeolocated } from "react-geolocated";
 
 function CurrWeather() {
   const [temp, setTemp] = useState<number>(0);
   const [icon, setIcon] = useState<string>("");
   const [timer, setTimer] = useState<boolean>(false);
-  const {coords} = useGeolocated({
-    positionOptions:{
+  const { coords } = useGeolocated({
+    positionOptions: {
       enableHighAccuracy: true,
     },
     userDecisionTimeout: 5000,
-  })
+  });
 
   useEffect(() => {
-    setInterval(() => { //timer to pull weather data every 30 mins 
-        setTimer(!timer)
-    }, 1000 * 60 * 30)
+    setInterval(() => {
+      //timer to pull weather data every 30 mins
+      setTimer(!timer);
+    }, 1000 * 60 * 30);
 
     async function fetchWeather() {
       const response = await fetch(
@@ -43,7 +44,7 @@ function CurrWeather() {
         console.log("error fetching weather");
       }
     }
-    if(coords != null){
+    if (coords != null) {
       fetchWeather();
     }
   }, [coords, timer]);
