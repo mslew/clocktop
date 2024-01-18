@@ -1,6 +1,5 @@
 //1024x600
 import { useState, useEffect } from "react";
-import dateFormat from "dateformat";
 import "./App.css";
 import Clock from "./components/Clock";
 import Weather from "./components/Weather";
@@ -15,7 +14,7 @@ function App() {
     return function cleanup() {
       clearInterval(timerId);
     };
-  }, []);
+  }, [date]);
 
   function refreshClock() {
     setDate(new Date());
