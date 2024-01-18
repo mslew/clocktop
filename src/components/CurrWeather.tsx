@@ -21,7 +21,7 @@ function CurrWeather() {
     async function fetchWeather() {
       const response = await fetch(
         `http://api.weatherapi.com/v1/current.json?key=${
-          import.meta.env.VITE_API_KEY_OG
+          import.meta.env.VITE_WEATHER_API_KEY
         }&q=${coords?.latitude},${coords?.longitude}`,
         {
           method: "POST",
@@ -45,7 +45,7 @@ function CurrWeather() {
       }
     }
     if (coords != null) {
-      fetchWeather();
+      //fetchWeather();
     }
   }, [coords, timer]);
 

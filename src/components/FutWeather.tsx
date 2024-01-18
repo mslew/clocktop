@@ -48,7 +48,7 @@ function FutWeather() {
     async function fetchWeather() {
       const response = await fetch(
         `http://api.weatherapi.com/v1/forecast.json?key=${
-          import.meta.env.VITE_API_KEY_OG
+          import.meta.env.VITE_WEATHER_API_KEY
         }&q=${coords?.latitude},${coords?.longitude}&days=4`,
         {
           method: "POST",
@@ -80,7 +80,7 @@ function FutWeather() {
       }
     }
     if (coords != null) {
-      fetchWeather();
+      //fetchWeather();
     }
   }, [coords, timer]);
 

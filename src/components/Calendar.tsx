@@ -1,5 +1,28 @@
+function Authorize() {
+  function handleAuthClick() {}
+  return (
+    <button className="border rounded p-1" onClick={handleAuthClick}>
+      Authorize Google Calendar
+    </button>
+  );
+}
+
+function SignOut() {
+  function handleSignoutClick() {}
+  return (
+    <button className="border rounded p-1" onClick={handleSignoutClick}>
+      Sign Out
+    </button>
+  );
+}
+
 function Calendar() {
   return (
+    <div className="flex flex-col h-full w-full gap-2 justify-center">
+      <Authorize />
+      <SignOut />
+    </div>
+    /** 
     <div className="flex flex-row h-full w-full gap-4 justify-center ">
       <svg
         className="fill-white"
@@ -12,6 +35,7 @@ function Calendar() {
       </svg>
       <p className="text-[4vh]">Meeting at 10am</p>
     </div>
+    */
   );
 }
 
