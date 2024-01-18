@@ -22,6 +22,7 @@ function FutWeatherDay({ temp }: { temp: Temp }) {
 
 function FutWeather() {
   const [temps, setTemps] = useState<Temp[]>([]);
+  const [timer, setTimer] = useState<boolean>(false)
   const { coords } = useGeolocated({
     positionOptions: {
       enableHighAccuracy: true,
