@@ -60,7 +60,6 @@ function FutWeather() {
           };
           setTemps((temps) => [...temps, newTemp]);
         }
-        console.log(temps);
       } else {
         console.log("error fetching weather");
       }

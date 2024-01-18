@@ -4,6 +4,7 @@ import { useGeolocated } from 'react-geolocated';
 function CurrWeather() {
   const [temp, setTemp] = useState<number>(0);
   const [icon, setIcon] = useState<string>("");
+  const [timer, setTimer] = useState<number>(0);
   const {coords} = useGeolocated({
     positionOptions:{
       enableHighAccuracy: true,
@@ -12,6 +13,11 @@ function CurrWeather() {
   })
 
   useEffect(() => {
+    console.log("Bashk")
+    setInterval(() => {
+        setTimer(0)
+    }, 1000) //1800000
+
     async function fetchWeather() {
       const response = await fetch(
         `http://api.weatherapi.com/v1/current.json?key=${
@@ -41,7 +47,7 @@ function CurrWeather() {
     if(coords != null){
       fetchWeather();
     }
-  }, [coords]);
+  }, [coords, timer]);
 
   return (
     <div className="flex flex-col row-span-2 items-center justify-center gap-8">
