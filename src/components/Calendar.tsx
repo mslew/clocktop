@@ -1,13 +1,23 @@
-import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  User,
+  signInWithPopup,
+  signInWithCredential,
+} from "firebase/auth";
 import { auth } from "../../firebase";
+import { gapi } from "gapi-script";
 import { useEffect, useState } from "react";
 
 function Calendar() {
   const [user, setUser] = useState<User | null>(null);
+  //const [events, setEvents] = useState<something here>{null};
 
-  function handleAuthClick() {
-    const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
+  async function handleAuthClick() {
+    const googleAuth = gapi.auth2.getAuthInstance();
+    const googleUser = await googleAuth.signIn();
+    const token = googleUser.getAuthResponse().id_token;
+    const credential = GoogleAuthProvider.credential(token);
+    await signInWithCredential(auth, credential);
   }
 
   function handleSignoutClick() {
@@ -15,14 +25,49 @@ function Calendar() {
   }
 
   useEffect(() => {
+    function initClient() {
+      gapi.load("client", () => {
+        console.log("loaded client");
+        gapi.client.init({
+          apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
+          clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+          discoveryDocs: [
+            "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+          ],
+          scope: "https://www.googleapis.com/auth/calendar.events.readonly",
+        });
+
+        gapi.client.load("calendar", "v3", () =>
+          console.log("loaded calendar")
+        );
+      });
+    }
+
     auth.onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
+        getCalendar();
       } else {
-        setUser(null)
+        setUser(null);
       }
     });
-    console.log(user);
+
+    async function getCalendar() {
+      try {
+        const events = await gapi.client.calendar.events.list({
+          calendarId: "primary",
+          timeMin: new Date().toISOString(),
+          showDeleted: false,
+          singleEvents: true,
+          maxResults: 10,
+          orderBy: "startTime",
+        });
+        console.log(events);
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    initClient();
   }, [user]);
 
   return (
