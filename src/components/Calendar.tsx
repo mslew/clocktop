@@ -19,7 +19,7 @@ function Calendar() {
       if (user) {
         setUser(user);
       } else {
-        console.log("not signed in bruvva");
+        setUser(null)
       }
     });
     console.log(user);
