@@ -2,42 +2,40 @@ import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useEffect, useState } from "react";
 
-function Authorize() {
-  function handleAuthClick() {
-    const provider = new GoogleAuthProvider()
-    return signInWithPopup(auth, provider)
-  }
-
-  return (
-    <button className="border rounded p-1" onClick={handleAuthClick}>
-      Authorize Google Calendar
-    </button>
-  );
-}
-
-function SignOut() {
-  function handleSignoutClick() {
-    auth.signOut()
-  }
-  return (
-    <button className="border rounded p-1" onClick={handleSignoutClick}>
-      Sign Out
-    </button>
-  );
-}
-
 function Calendar() {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(null);
+
+  function handleAuthClick() {
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(auth, provider);
+  }
+
+  function handleSignoutClick() {
+    auth.signOut();
+  }
 
   useEffect(() => {
-    setUser(auth.currentUser)
-    console.log(user)
-  }, [user])
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        console.log("not signed in bruvva");
+      }
+    });
+    console.log(user);
+  }, [user]);
 
   return (
     <div className="flex flex-col h-full w-full gap-2 justify-center">
-      <Authorize />
-      <SignOut />
+      {user ? (
+        <button className="border rounded p-1" onClick={handleSignoutClick}>
+          Sign Out
+        </button>
+      ) : (
+        <button className="border rounded p-1" onClick={handleAuthClick}>
+          Authorize Google Calendar
+        </button>
+      )}
     </div>
     /** 
     <div className="flex flex-row h-full w-full gap-4 justify-center ">
