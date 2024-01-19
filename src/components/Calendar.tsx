@@ -1,5 +1,13 @@
+import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
+import { auth } from "../../firebase";
+import { useEffect, useState } from "react";
+
 function Authorize() {
-  function handleAuthClick() {}
+  function handleAuthClick() {
+    const provider = new GoogleAuthProvider()
+    return signInWithPopup(auth, provider)
+  }
+
   return (
     <button className="border rounded p-1" onClick={handleAuthClick}>
       Authorize Google Calendar
@@ -8,7 +16,9 @@ function Authorize() {
 }
 
 function SignOut() {
-  function handleSignoutClick() {}
+  function handleSignoutClick() {
+    auth.signOut()
+  }
   return (
     <button className="border rounded p-1" onClick={handleSignoutClick}>
       Sign Out
@@ -17,6 +27,13 @@ function SignOut() {
 }
 
 function Calendar() {
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    setUser(auth.currentUser)
+    console.log(user)
+  }, [user])
+
   return (
     <div className="flex flex-col h-full w-full gap-2 justify-center">
       <Authorize />
