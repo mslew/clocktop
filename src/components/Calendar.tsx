@@ -4,13 +4,20 @@ import {
   signInWithPopup,
   signInWithCredential,
 } from "firebase/auth";
+import { Common } from "googleapis";
 import { auth } from "../../firebase";
 import { gapi } from "gapi-script";
 import { useEffect, useState } from "react";
 
 function Calendar() {
+  interface Event{
+    startDate: {}
+    endDate: {}
+    summary: string
+  }
+
   const [user, setUser] = useState<User | null>(null);
-  //const [events, setEvents] = useState<something here>{null};
+  const [events, setEvents] = useState<Event[]>([]);
 
   async function handleAuthClick() {
     const googleAuth = gapi.auth2.getAuthInstance();
@@ -62,7 +69,19 @@ function Calendar() {
           maxResults: 10,
           orderBy: "startTime",
         });
-        console.log(events);
+        const data = JSON.parse(events.body).items
+        for(let i = 0; i < data.length; i++){
+          let startDate: {} = data[i].start
+          let endDate: {} = data[i].end
+          let summary: string = data[i].summary
+          let event: Event = {
+            startDate: startDate,
+            endDate: endDate,
+            summary: summary
+          }
+          console.log(event)
+          setEvents((events) => [...events, event]);
+        }
       } catch (err) {
         console.log(err)
       }
