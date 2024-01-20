@@ -33,8 +33,9 @@ function FutWeather() {
   useEffect(() => {
     setInterval(() => {
       //trigger API call once midnight is reached to update future days
+      setTemps([])
       setTimer(!timer);
-    }, msUntilMidnight());
+    }, msUntilMidnight() + 30000); //adding 30 seconds here after midnight for API to update
 
     function msUntilMidnight() {
       let midnight = new Date();

@@ -1,19 +1,13 @@
-import {
-  GoogleAuthProvider,
-  User,
-  signInWithPopup,
-  signInWithCredential,
-} from "firebase/auth";
-import { Common } from "googleapis";
+import { GoogleAuthProvider, User, signInWithCredential } from "firebase/auth";
 import { auth } from "../../firebase";
 import { gapi } from "gapi-script";
 import { useEffect, useState } from "react";
 
 function Calendar() {
-  interface Event{
-    startDate: {}
-    endDate: {}
-    summary: string
+  interface Event {
+    startDate: {};
+    endDate: {};
+    summary: string;
   }
 
   const [user, setUser] = useState<User | null>(null);
@@ -61,7 +55,7 @@ function Calendar() {
 
     async function getCalendar() {
       try {
-        const events = await gapi.client.calendar.events.list({
+        const eventsFromCalendar = await gapi.client.calendar.events.list({
           calendarId: "primary",
           timeMin: new Date().toISOString(),
           showDeleted: false,
@@ -69,28 +63,28 @@ function Calendar() {
           maxResults: 10,
           orderBy: "startTime",
         });
-        const data = JSON.parse(events.body).items
-        for(let i = 0; i < data.length; i++){
-          let startDate: {} = data[i].start
-          let endDate: {} = data[i].end
-          let summary: string = data[i].summary
-          let event: Event = {
+        const data = JSON.parse(eventsFromCalendar.body).items;
+        for (let i = 0; i < data.length; i++) {
+          let startDate: {} = data[i].start;
+          let endDate: {} = data[i].end;
+          let summary: string = data[i].summary;
+          let newEvent: Event = {
             startDate: startDate,
             endDate: endDate,
-            summary: summary
-          }
-          console.log(event)
-          setEvents((events) => [...events, event]);
+            summary: summary,
+          };
+          setEvents((events) => [...events, newEvent]);
         }
+        console.log(events);
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     }
     initClient();
   }, [user]);
 
   return (
-    <div className="flex flex-col h-full w-full gap-2 justify-center">
+    <div className="flex flex-col-reverse h-full w-full gap-2 justify-center">
       {user ? (
         <button className="border rounded p-1" onClick={handleSignoutClick}>
           Sign Out
@@ -100,9 +94,6 @@ function Calendar() {
           Authorize Google Calendar
         </button>
       )}
-    </div>
-    /** 
-    <div className="flex flex-row h-full w-full gap-4 justify-center ">
       <svg
         className="fill-white"
         xmlns="http://www.w3.org/2000/svg"
@@ -112,9 +103,8 @@ function Calendar() {
       >
         <path d="M96 32V64H48C21.5 64 0 85.5 0 112v48H448V112c0-26.5-21.5-48-48-48H352V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V64H160V32c0-17.7-14.3-32-32-32S96 14.3 96 32zM448 192H0V464c0 26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V192z" />
       </svg>
-      <p className="text-[4vh]">Meeting at 10am</p>
+      <p className="text-[4vh]">{}</p>
     </div>
-    */
   );
 }
 
