@@ -12,6 +12,7 @@ function Calendar() {
 
   const [user, setUser] = useState<User | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
+  const [calendarLoad, setCalendarLoad] = useState<boolean>(false);
 
   async function handleAuthClick() {
     const googleAuth = gapi.auth2.getAuthInstance();
@@ -38,16 +39,21 @@ function Calendar() {
           scope: "https://www.googleapis.com/auth/calendar.events.readonly",
         });
 
-        gapi.client.load("calendar", "v3", () =>
-          console.log("loaded calendar")
-        );
+        gapi.client.load("calendar", "v3", () => {
+          console.log("loaded calendar");
+          setCalendarLoad(true);
+        });
       });
     }
+    initClient();
+  }, []);
 
+  useEffect(() => {
+    //TODO: Fix calling events after calendar loads error. 
     auth.onAuthStateChanged((user) => {
-      if (user) {
+      if (user && calendarLoad) {
         setUser(user);
-        getCalendar();
+        //getCalendar();
       } else {
         setUser(null);
       }
@@ -80,8 +86,7 @@ function Calendar() {
         console.log(err);
       }
     }
-    initClient();
-  }, [user]);
+  }, [calendarLoad]);
 
   return (
     <div className="flex flex-col-reverse h-full w-full gap-2 justify-center">
