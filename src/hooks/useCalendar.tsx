@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { gapi } from "gapi-script";
+import useUser from "./useUser";
 
 function useCalendar() {
   interface Event {
@@ -8,6 +9,7 @@ function useCalendar() {
     summary: string;
   }
   const [events, setEvents] = useState<Event[]>([]);
+  const { user } = useUser()
 
   function listEvents() {
     return events;
@@ -27,7 +29,10 @@ function useCalendar() {
         });
         gapi.client.load("calendar", "v3", () => {
           console.log("loaded calendar");
-          fetchEvents();
+          if (user){
+            console.log('poggers')
+            fetchEvents();
+          }
         });
       });
     }
