@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGeolocated } from "react-geolocated";
+import { useGeolocation } from "react-use";
 import date from "date-and-time";
 
 interface Temp {
@@ -23,11 +23,9 @@ function FutWeatherDay({ temp }: { temp: Temp }) {
 function FutWeather() {
   const [temps, setTemps] = useState<Temp[]>([]);
   const [timer, setTimer] = useState<boolean>(false);
-  const { coords } = useGeolocated({
-    positionOptions: {
-      enableHighAccuracy: true,
-    },
-    userDecisionTimeout: 5000,
+  const coords  = useGeolocation({
+    enableHighAccuracy: true,
+    maximumAge: 1000 * 60 * 30,
   });
 
   useEffect(() => {

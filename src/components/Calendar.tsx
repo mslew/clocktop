@@ -1,92 +1,12 @@
-import { GoogleAuthProvider, User, signInWithCredential } from "firebase/auth";
-import { auth } from "../../firebase";
-import { gapi } from "gapi-script";
-import { useEffect, useState } from "react";
+import useUser from "../hooks/useUser";
+import useCalendar from "../hooks/useCalendar";
 
 function Calendar() {
-  interface Event {
-    startDate: {};
-    endDate: {};
-    summary: string;
-  }
+  const { user, handleAuthClick, handleSignoutClick } = useUser();
+  const { listEvents } = useCalendar();
 
-  const [user, setUser] = useState<User | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
-  const [calendarLoad, setCalendarLoad] = useState<boolean>(false);
-
-  async function handleAuthClick() {
-    const googleAuth = gapi.auth2.getAuthInstance();
-    const googleUser = await googleAuth.signIn();
-    const token = googleUser.getAuthResponse().id_token;
-    const credential = GoogleAuthProvider.credential(token);
-    await signInWithCredential(auth, credential);
-  }
-
-  function handleSignoutClick() {
-    auth.signOut();
-  }
-
-  useEffect(() => {
-    function initClient() {
-      gapi.load("client", () => {
-        console.log("loaded client");
-        gapi.client.init({
-          apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-          clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-          discoveryDocs: [
-            "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-          ],
-          scope: "https://www.googleapis.com/auth/calendar.events.readonly",
-        });
-
-        gapi.client.load("calendar", "v3", () => {
-          console.log("loaded calendar");
-          setCalendarLoad(true);
-        });
-      });
-    }
-    initClient();
-  }, []);
-
-  useEffect(() => {
-    //TODO: Fix calling events after calendar loads error. 
-    auth.onAuthStateChanged((user) => {
-      if (user && calendarLoad) {
-        setUser(user);
-        //getCalendar();
-      } else {
-        setUser(null);
-      }
-    });
-
-    async function getCalendar() {
-      try {
-        const eventsFromCalendar = await gapi.client.calendar.events.list({
-          calendarId: "primary",
-          timeMin: new Date().toISOString(),
-          showDeleted: false,
-          singleEvents: true,
-          maxResults: 10,
-          orderBy: "startTime",
-        });
-        const data = JSON.parse(eventsFromCalendar.body).items;
-        for (let i = 0; i < data.length; i++) {
-          let startDate: {} = data[i].start;
-          let endDate: {} = data[i].end;
-          let summary: string = data[i].summary;
-          let newEvent: Event = {
-            startDate: startDate,
-            endDate: endDate,
-            summary: summary,
-          };
-          setEvents((events) => [...events, newEvent]);
-        }
-        console.log(events);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }, [calendarLoad]);
+  const events = listEvents
+  //console.log(events);
 
   return (
     <div className="flex flex-col-reverse h-full w-full gap-2 justify-center">
