@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function Clock({ time }: { time: Date }) {
+function Clock() {
     const [hour, setHour] = useState<number | null>(null);
     const [minute, setMinute] = useState<number | string | null>(null);
     const [ampm, setAmpm] = useState<string | null>(null);
