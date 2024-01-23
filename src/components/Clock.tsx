@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
 import { useDateAndTime } from "../contexts/DateAndTimeContext";
 
 function Clock() {
-  const {hour, minute, ampm} = useDateAndTime()
+  const { hour, minute, ampm } = useDateAndTime();
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
