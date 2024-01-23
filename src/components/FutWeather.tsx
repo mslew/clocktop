@@ -80,7 +80,7 @@ function FutWeather() {
       }
     }
     if (coords != null) {
-      fetchWeather();
+      //fetchWeather();
     }
   }, [coords, timer]);
 

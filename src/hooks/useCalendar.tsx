@@ -4,21 +4,23 @@ import { useGapiContext } from "../contexts/GapiContext";
 
 function useCalendar() {
   interface Event {
-    startDate: {};
-    endDate: {};
+    startDate: {
+      dateTime: Date;
+      timeZone: string;
+    };
+    endDate: {
+      dateTime: Date;
+      timeZone: string;
+    };
     summary: string;
   }
   const [events, setEvents] = useState<Event[]>([]);
   const { loaded } = useGapiContext();
 
-  function listEvents() {
-    return events;
-  }
-
   useEffect(() => {
     async function fetchEvents() {
       try {
-        setEvents([])
+        setEvents([]);
         const eventsFromCalendar = await gapi.client.calendar.events.list({
           calendarId: "primary",
           timeMin: new Date().toISOString(),
@@ -29,18 +31,31 @@ function useCalendar() {
         });
         const data = JSON.parse(eventsFromCalendar.body).items;
         for (let i = 0; i < data.length; i++) {
-          let startDate: {} = data[i].start;
-          let endDate: {} = data[i].end;
+          let startDate: {
+            dateTime: Date;
+            timeZone: string;
+          } = data[i].start;
+          let endDate: {
+            dateTime: Date;
+            timeZone: string;
+          } = data[i].end;
           let summary: string = data[i].summary;
           let newEvent: Event = {
-            startDate: startDate,
-            endDate: endDate,
+            startDate: {
+              dateTime: new Date(startDate.dateTime),
+              timeZone: startDate.timeZone,
+            },
+            endDate: {
+              dateTime: new Date(endDate.dateTime),
+              timeZone: endDate.timeZone,
+            },
             summary: summary,
           };
+          console.log(newEvent)
           setEvents((events) => [...events, newEvent]);
         }
       } catch (err) {
-        console.log(err);
+        setEvents([]);
       }
     }
     if (loaded) {
@@ -49,7 +64,7 @@ function useCalendar() {
   }, [loaded]);
 
   return {
-    listEvents,
+    events,
   };
 }
 
