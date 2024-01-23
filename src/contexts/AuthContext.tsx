@@ -43,10 +43,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log("signed in user poggers");
         setUser(user);
       } else {
-        console.log("byebye gamer");
         setUser(null);
       }
     });
