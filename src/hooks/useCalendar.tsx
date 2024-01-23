@@ -18,6 +18,7 @@ function useCalendar() {
   useEffect(() => {
     async function fetchEvents() {
       try {
+        setEvents([])
         const eventsFromCalendar = await gapi.client.calendar.events.list({
           calendarId: "primary",
           timeMin: new Date().toISOString(),
@@ -43,7 +44,6 @@ function useCalendar() {
       }
     }
     if (loaded) {
-      console.log("wiener");
       fetchEvents();
     }
   }, [loaded]);
