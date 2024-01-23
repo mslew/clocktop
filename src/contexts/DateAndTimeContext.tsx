@@ -1,18 +1,18 @@
 import { createContext, useState, useEffect, useContext } from "react";
 
-type Data = {
-  date: Date,
-  hour: string | number,
-  minute: string | number,
-  ampm: string
-}
+type DataAndTimeContextType = {
+  date: Date;
+  hour: string | number;
+  minute: string | number;
+  ampm: string;
+};
 
-const DateAndTimeContextDefaultValues: Data = {
+const DateAndTimeContextDefaultValues: DataAndTimeContextType = {
   date: new Date(),
-  hour: '',
-  minute: '',
-  ampm: ''
-}
+  hour: "",
+  minute: "",
+  ampm: "",
+};
 
 const DateAndTimeContext = createContext(DateAndTimeContextDefaultValues);
 
@@ -53,7 +53,7 @@ export function DateAndTimeProvider({
     setAmpm(ampm);
   }, [date]);
 
-  const dateAndTimeData: Data = {
+  const dateAndTimeData: DataAndTimeContextType = {
     date: date,
     hour: hour,
     minute: minute,
