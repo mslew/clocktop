@@ -42,6 +42,10 @@ function useCalendar() {
         console.log(err);
       }
     }
+    if (loaded) {
+      console.log("wiener");
+      fetchEvents();
+    }
   }, [loaded]);
 
   return {

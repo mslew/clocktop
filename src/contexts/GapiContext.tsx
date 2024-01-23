@@ -1,7 +1,15 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { gapi } from "gapi-script";
 
-const GapiContext = createContext(false);
+type GapiContextType = {
+  loaded: boolean
+}
+
+const GapiContextDefaultValues: GapiContextType = {
+  loaded: false
+}
+
+const GapiContext = createContext(GapiContextDefaultValues);
 
 export function useGapiContext() {
   return useContext(GapiContext);
@@ -27,5 +35,10 @@ export function GapiProvider({ children }: { children: React.ReactNode }) {
       });
     });
   }, []);
-  return <GapiContext.Provider value={loaded}>{children}</GapiContext.Provider>;
+
+  const GapiContextData: GapiContextType = {
+    loaded: loaded
+  }
+  
+  return <GapiContext.Provider value={GapiContextData}>{children}</GapiContext.Provider>;
 }

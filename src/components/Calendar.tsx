@@ -1,7 +1,11 @@
 import { useAuthContext } from "../contexts/AuthContext";
+import useCalendar from "../hooks/useCalendar";
 
 function Calendar() {
   const { user, login, logout } = useAuthContext();
+  const { listEvents } = useCalendar();
+
+  console.log(listEvents())
 
   return (
     <div className="flex flex-col-reverse h-full w-full gap-2 justify-center">
