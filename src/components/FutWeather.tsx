@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGeolocated } from "react-geolocated";
+import { useGeolocation } from "react-use";
 import date from "date-and-time";
 
 interface Temp {
@@ -23,18 +23,18 @@ function FutWeatherDay({ temp }: { temp: Temp }) {
 function FutWeather() {
   const [temps, setTemps] = useState<Temp[]>([]);
   const [timer, setTimer] = useState<boolean>(false);
-  const { coords } = useGeolocated({
-    positionOptions: {
-      enableHighAccuracy: true,
-    },
-    userDecisionTimeout: 5000,
+  const coords  = useGeolocation({
+    enableHighAccuracy: true,
+    maximumAge: 1000 * 60 * 30,
   });
 
   useEffect(() => {
-    setInterval(() => {
+    setInterval(async () => {
       //trigger API call once midnight is reached to update future days
+      //TODO: Set delay so we dont have an array longer than 3. 
+      setTemps([])
       setTimer(!timer);
-    }, msUntilMidnight());
+    }, 5000)//msUntilMidnight() + 30000); //adding 30 seconds here after midnight for API to update
 
     function msUntilMidnight() {
       let midnight = new Date();
@@ -48,7 +48,7 @@ function FutWeather() {
     async function fetchWeather() {
       const response = await fetch(
         `http://api.weatherapi.com/v1/forecast.json?key=${
-          import.meta.env.VITE_API_KEY_OG
+          import.meta.env.VITE_WEATHER_API_KEY
         }&q=${coords?.latitude},${coords?.longitude}&days=4`,
         {
           method: "POST",
@@ -80,7 +80,7 @@ function FutWeather() {
       }
     }
     if (coords != null) {
-      fetchWeather();
+      //fetchWeather();
     }
   }, [coords, timer]);
 

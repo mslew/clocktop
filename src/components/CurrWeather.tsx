@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
-import { useGeolocated } from "react-geolocated";
+import { useGeolocation } from "react-use";
 
 function CurrWeather() {
   const [temp, setTemp] = useState<number>(0);
   const [icon, setIcon] = useState<string>("");
   const [timer, setTimer] = useState<boolean>(false);
-  const { coords } = useGeolocated({
-    positionOptions: {
-      enableHighAccuracy: true,
-    },
-    userDecisionTimeout: 5000,
+  const coords  = useGeolocation({
+    enableHighAccuracy: true,
+    maximumAge: 1000 * 60 * 30,
   });
 
   useEffect(() => {
@@ -21,7 +19,7 @@ function CurrWeather() {
     async function fetchWeather() {
       const response = await fetch(
         `http://api.weatherapi.com/v1/current.json?key=${
-          import.meta.env.VITE_API_KEY_OG
+          import.meta.env.VITE_WEATHER_API_KEY
         }&q=${coords?.latitude},${coords?.longitude}`,
         {
           method: "POST",
@@ -45,7 +43,7 @@ function CurrWeather() {
       }
     }
     if (coords != null) {
-      fetchWeather();
+      //fetchWeather();
     }
   }, [coords, timer]);
 

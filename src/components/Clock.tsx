@@ -1,21 +1,8 @@
 import { useState, useEffect } from "react";
+import { useDateAndTime } from "../contexts/DateAndTimeContext";
 
-function Clock({ time }: { time: Date }) {
-    const [hour, setHour] = useState<number | null>(null);
-    const [minute, setMinute] = useState<number | string | null>(null);
-    const [ampm, setAmpm] = useState<string | null>(null);
-
-    useEffect(() => {
-        let hours = time.getHours();
-        let minutes: string | number = time.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12;
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        setHour(hours)
-        setMinute(minutes)
-        setAmpm(ampm)
-    }, [time]);
+function Clock() {
+  const {hour, minute, ampm} = useDateAndTime()
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
