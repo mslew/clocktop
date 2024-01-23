@@ -1,21 +1,20 @@
-import useUser from "../hooks/useUser";
+import { useAuthContext } from "../contexts/AuthContext";
 import useCalendar from "../hooks/useCalendar";
 
 function Calendar() {
-  const { user, handleAuthClick, handleSignoutClick } = useUser();
+  const { user, login, logout } = useAuthContext();
   const { listEvents } = useCalendar();
 
-  const events = listEvents
-  //console.log(events);
+  console.log(listEvents())
 
   return (
     <div className="flex flex-col-reverse h-full w-full gap-2 justify-center">
       {user ? (
-        <button className="border rounded p-1" onClick={handleSignoutClick}>
+        <button className="border rounded p-1" onClick={logout}>
           Sign Out
         </button>
       ) : (
-        <button className="border rounded p-1" onClick={handleAuthClick}>
+        <button className="border rounded p-1" onClick={login}>
           Authorize Google Calendar
         </button>
       )}

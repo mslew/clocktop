@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { gapi } from "gapi-script";
-import useUser from "./useUser";
+import { useGapiContext } from "../contexts/GapiContext";
 
 function useCalendar() {
   interface Event {
@@ -9,33 +9,13 @@ function useCalendar() {
     summary: string;
   }
   const [events, setEvents] = useState<Event[]>([]);
-  const { user } = useUser()
+  const { loaded } = useGapiContext();
 
   function listEvents() {
     return events;
   }
 
   useEffect(() => {
-    function initClient() {
-      gapi.load("client", () => {
-        console.log("loaded client");
-        gapi.client.init({
-          apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-          clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-          discoveryDocs: [
-            "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-          ],
-          scope: "https://www.googleapis.com/auth/calendar.events.readonly",
-        });
-        gapi.client.load("calendar", "v3", () => {
-          console.log("loaded calendar");
-          if (user){
-            console.log('poggers')
-            fetchEvents();
-          }
-        });
-      });
-    }
     async function fetchEvents() {
       try {
         const eventsFromCalendar = await gapi.client.calendar.events.list({
@@ -62,8 +42,11 @@ function useCalendar() {
         console.log(err);
       }
     }
-    initClient();
-  }, []);
+    if (loaded) {
+      console.log("wiener");
+      fetchEvents();
+    }
+  }, [loaded]);
 
   return {
     listEvents,
