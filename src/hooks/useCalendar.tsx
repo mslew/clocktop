@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { gapi } from "gapi-script";
+import { useGapiContext } from "../contexts/GapiContext";
 
 function useCalendar() {
   interface Event {
@@ -7,13 +9,14 @@ function useCalendar() {
     summary: string;
   }
   const [events, setEvents] = useState<Event[]>([]);
+  const { loaded } = useGapiContext();
 
   function listEvents() {
     return events;
   }
 
   useEffect(() => {
-    /**async function fetchEvents() {
+    async function fetchEvents() {
       try {
         const eventsFromCalendar = await gapi.client.calendar.events.list({
           calendarId: "primary",
@@ -38,8 +41,8 @@ function useCalendar() {
       } catch (err) {
         console.log(err);
       }
-    }*/
-  }, []);
+    }
+  }, [loaded]);
 
   return {
     listEvents,

@@ -3,8 +3,6 @@ import { useAuthContext } from "../contexts/AuthContext";
 function Calendar() {
   const { user, login, logout } = useAuthContext();
 
-  console.log(user)
-
   return (
     <div className="flex flex-col-reverse h-full w-full gap-2 justify-center">
       {user ? (
