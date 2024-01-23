@@ -31,10 +31,9 @@ function FutWeather() {
   useEffect(() => {
     setInterval(async () => {
       //trigger API call once midnight is reached to update future days
-      //TODO: Set delay so we dont have an array longer than 3. 
       setTemps([])
       setTimer(!timer);
-    }, 5000)//msUntilMidnight() + 30000); //adding 30 seconds here after midnight for API to update
+    }, msUntilMidnight() + 30000); //adding 30 seconds here after midnight for API to update
 
     function msUntilMidnight() {
       let midnight = new Date();
@@ -60,6 +59,7 @@ function FutWeather() {
       );
 
       if (response.ok) {
+        setTemps([])
         const data = await response.json();
         for (let i = 1; i < 4; i++) {
           let date: Date = new Date(data.forecast.forecastday[i].date);
@@ -80,7 +80,7 @@ function FutWeather() {
       }
     }
     if (coords != null) {
-      //fetchWeather();
+      fetchWeather();
     }
   }, [coords, timer]);
 
