@@ -36,16 +36,7 @@ function Calendar() {
   }
 
   return (
-    <div className="flex flex-col-reverse h-full w-full gap-2 justify-center">
-      {user ? (
-        <button className="border rounded p-1" onClick={logout}>
-          Sign Out
-        </button>
-      ) : (
-        <button className="border rounded p-1" onClick={login}>
-          Authorize Google Calendar
-        </button>
-      )}
+    <div className="flex flex-col h-full w-full gap-2 pt-2 justify-center">
       <div className="flex flex-row gap-4">
         <svg
           className="fill-white"
@@ -68,6 +59,15 @@ function Calendar() {
           </div>
         ))}
       </div>
+      {user ? (
+        <button className="border rounded p-1 hover:bg-gray-600" onClick={logout}>
+          Sign Out
+        </button>
+      ) : (
+        <button className="border rounded p-1 hover:bg-gray-600" onClick={login}>
+          Authorize Google Calendar
+        </button>
+      )}
     </div>
   );
 }
