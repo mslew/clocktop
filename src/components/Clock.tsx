@@ -1,7 +1,7 @@
-import { useDateAndTime } from "../contexts/DateAndTimeContext";
+import { useDateAndTimeContext } from "../contexts/DateAndTimeContext";
 
 function Clock() {
-  const { hour, minute, ampm } = useDateAndTime();
+  const { hour, minute, ampm } = useDateAndTimeContext();
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">

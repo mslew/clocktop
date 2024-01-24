@@ -1,4 +1,5 @@
 import { useAuthContext } from "../contexts/AuthContext";
+import { useDateAndTimeContext } from "../contexts/DateAndTimeContext";
 import useCalendar from "../hooks/useCalendar";
 
 type HourAmPm = {
@@ -8,7 +9,15 @@ type HourAmPm = {
 
 function Calendar() {
   const { user, login, logout } = useAuthContext();
+  const { date } = useDateAndTimeContext();
   const { events } = useCalendar();
+
+  events.slice(0, 1).map((event) => {
+    if(event.startDate.dateTime.getDate() === date.getDate()){
+      //TODO: Do something here for presenting events only on the date needed...
+      //console.log("Let's Goooooo!!!")
+    }
+  })
 
   function convertTime(hours: number): HourAmPm {
     let time: HourAmPm = {
@@ -23,7 +32,6 @@ function Calendar() {
       hour: newHours,
       ampm: newFormat,
     };
-    console.log(time);
     return time;
   }
 
@@ -51,9 +59,9 @@ function Calendar() {
         {events.slice(0, 1).map((event, index) => (
           <div className="flex flex-col" key={index}>
             <p className="text-[4vh]">
-              {convertTime(event.startDate.dateTime.getHours()).hour}{" "}
+              {convertTime(event.startDate.dateTime.getHours()).hour}
               {convertTime(event.startDate.dateTime.getHours()).ampm} {" - "}
-              {convertTime(event.endDate.dateTime.getHours()).hour}{" "}
+              {convertTime(event.endDate.dateTime.getHours()).hour}
               {convertTime(event.endDate.dateTime.getHours()).ampm}
             </p>
             <p className="text-[3vh]">{event.summary}</p>

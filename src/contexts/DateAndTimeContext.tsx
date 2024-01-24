@@ -16,7 +16,7 @@ const DateAndTimeContextDefaultValues: DataAndTimeContextType = {
 
 const DateAndTimeContext = createContext(DateAndTimeContextDefaultValues);
 
-export function useDateAndTime() {
+export function useDateAndTimeContext() {
   return useContext(DateAndTimeContext);
 }
 

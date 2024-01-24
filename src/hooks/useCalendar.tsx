@@ -53,7 +53,6 @@ function useCalendar() {
             },
             summary: summary,
           };
-          console.log(newEvent);
           setEvents((events) => [...events, newEvent]);
         }
       } catch (err) {
