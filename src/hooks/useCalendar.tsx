@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { gapi } from "gapi-script";
 import { useGapiContext } from "../contexts/GapiContext";
+import { useAuthContext } from "../contexts/AuthContext";
 
 function useCalendar() {
   interface Event {
@@ -14,6 +15,7 @@ function useCalendar() {
     };
     summary: string;
   }
+  const { user } = useAuthContext();
   const [events, setEvents] = useState<Event[]>([]);
   const { loaded } = useGapiContext();
 
@@ -51,17 +53,20 @@ function useCalendar() {
             },
             summary: summary,
           };
-          console.log(newEvent)
+          console.log(newEvent);
           setEvents((events) => [...events, newEvent]);
         }
       } catch (err) {
         setEvents([]);
       }
     }
-    if (loaded) {
+    if (loaded && user) {
       fetchEvents();
     }
-  }, [loaded]);
+    if(!user){
+      setEvents([])
+    }
+  }, [loaded, user]);
 
   return {
     events,
