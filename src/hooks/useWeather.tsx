@@ -22,8 +22,11 @@ function useWeather() {
     enableHighAccuracy: true,
     maximumAge: 0,
   });
+//TODO: Fix Coordinates taking so long to load.
+  useEffect(() => {}, [coords]);
 
   useEffect(() => {
+    console.log(coords);
     setInterval(() => {
       //timer to pull weather data every 30 mins
       setCurrTimer(!currTimer);
@@ -57,7 +60,7 @@ function useWeather() {
         console.log("error fetching weather");
       }
     }
-    if (coords != null) {
+    if (!coords.loading) {
       fetchWeather();
     }
   }, [currTimer]);
@@ -113,14 +116,14 @@ function useWeather() {
         console.log("error fetching weather");
       }
     }
-    if (coords != null) {
+    if (!coords.loading) {
       fetchWeather();
     }
   }, [futTimer]);
 
   return {
     futureTemps,
-    currTemp, 
+    currTemp,
   };
 }
 
