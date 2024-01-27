@@ -1,8 +1,7 @@
 import useWeather from "../hooks/useWeather";
 
-
 function CurrWeather() {
-  const {currTemp} = useWeather()
+  const { currTemp } = useWeather();
   return (
     <div className="flex flex-col row-span-2 items-center justify-center gap-8">
       <img className="" src={currTemp.icon} alt="weather icon" />

@@ -22,11 +22,9 @@ function useWeather() {
     enableHighAccuracy: true,
     maximumAge: 0,
   });
-//TODO: Fix Coordinates taking so long to load.
-  useEffect(() => {}, [coords]);
-
+  console.log(coords);
+  //TODO: Fix Coordinates needing a double re-render to load? Most likely rewrite this to be better... :)
   useEffect(() => {
-    console.log(coords);
     setInterval(() => {
       //timer to pull weather data every 30 mins
       setCurrTimer(!currTimer);
@@ -63,10 +61,10 @@ function useWeather() {
     if (!coords.loading) {
       fetchWeather();
     }
-  }, [currTimer]);
+  }, [currTimer, coords]);
 
   useEffect(() => {
-    setInterval(async () => {
+    setInterval(() => {
       //trigger API call once midnight is reached to update future days
       setFutureTemps([]);
       setFutTimer(!futTimer);
@@ -119,7 +117,7 @@ function useWeather() {
     if (!coords.loading) {
       fetchWeather();
     }
-  }, [futTimer]);
+  }, [futTimer, coords]);
 
   return {
     futureTemps,
