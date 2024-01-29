@@ -20,11 +20,11 @@ function useWeather() {
   const [currTimer, setCurrTimer] = useState<boolean>(false);
   const coords = useGeolocation({
     enableHighAccuracy: true,
-    maximumAge: 0,
+    timeout: Infinity,
   });
   console.log(coords);
   //TODO: Fix Coordinates needing a double re-render to load? Most likely rewrite this to be better... :)
-  useEffect(() => {
+  /**useEffect(() => {
     setInterval(() => {
       //timer to pull weather data every 30 mins
       setCurrTimer(!currTimer);
@@ -117,7 +117,7 @@ function useWeather() {
     if (!coords.loading) {
       fetchWeather();
     }
-  }, [futTimer, coords]);
+  }, [futTimer, coords]);*/
 
   return {
     futureTemps,
